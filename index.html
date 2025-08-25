@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TO DO LIST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+       body{
+        font-family: Arial;
+        color: aliceblue;
+        background-image: url('wallpaper.jpg');
+        background-size: cover;
+       } 
+       .todo-grid,
+       .intodo-grid{
+        display:grid;
+        grid-template-columns: 300px 200px 150px;
+        column-gap: 10px ;
+        row-gap: 10px;
+        
+       }
+       .intodo-grid{
+        margin-bottom: 10px;
+        margin-top: 30px;
+       }
+       .css-todo{
+        padding: 10px;
+        margin-top: 30px;
+       }
+       .css-date{
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 30px;
+       }
+       .css-add-button{
+        background-color: green;
+        color: white;
+        border:none;
+        border-radius: 20px;
+        margin-top: 30px;
+       }
+       .css-delete-button{
+        background-color: red;
+        color: White;
+        border: None;
+        padding: 10px;
+        border-radius: 20px;
+       }
+       .css-todayDate{
+        color: white;
+        font-family: cursive;
+        font-size: 20px;
+        width: 300px;
+        margin: auto 0 auto auto ;
+       }
+       .todo-letter{
+        font-family: fantasy;
+        font-size: 60px;
+        letter-spacing: 5px;
+        width: 300px;
+        margin: 0 auto;
+        }
+        .gradient-text{
+   
+            background: linear-gradient(to right, rgb(255, 255, 255),rgb(185, 46, 209), rgb(56, 2, 132));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="todo-letter gradient-text">TO DO LIST</div>       
+    <div class="js-todayDate css-todayDate"></div>      
+    <div class = "intodo-grid"><input placeholder="to do work name" class="js-todo css-todo" onkeydown="handleCostKeydown(event);">
+        <input type="date" class = "js-due-date css-date">
+        <button onclick="todoL();" class="css-add-button">ADD</button>
+    </div>
+    <div class = "js-todo-div todo-grid"></div>
+</body>
+<script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script>
+<script>
+    const today = dayjs();
+    displayDate = today.format('DD-MMMM-YYYY');
+    
+    const mindate = today.format('YYYY-MM-DD');
+    document.querySelector('.js-due-date').setAttribute('min',mindate);
+
+    document.querySelector('.js-todayDate').innerHTML = `Today's Date : ${displayDate}`;
+
+    function handleCostKeydown(event){
+        if(event.key === 'Enter'){
+            todoL();
+        }
+
+    }
+    let todoList = [{Name : 'Akshit\'s Homework',dueDate:'2025-06-23'},{Name: 'Coding',dueDate: '2025-06-24'}];
+    rendertodoList();
+    function rendertodoList(){
+       let todolistHTML = '';
+        for(let i = 0; i< todoList.length;i++){
+            const todoObject = todoList[i];
+            const{Name , dueDate} = todoObject;
+            const html =  `<div>${Name}</div> <div>${dueDate}</div>  <button class="css-delete-button" onclick= " todoList.splice(${i},1); rendertodoList();">Delete</button>`;
+            todolistHTML += html;
+        }
+       document.querySelector('.js-todo-div').innerHTML = todolistHTML; 
+    }
+    function todoL(){
+       inputElement = document.querySelector('.js-todo');
+       const Name = inputElement.value;
+       const inputdueDate = document.querySelector('.js-due-date');
+       const dueDate = inputdueDate.value;
+
+       if (Name === '' || dueDate === '') {
+       alert("Please enter a task and select a due date.");
+       return;
+     }
+       todoList.push({Name : Name ,dueDate : dueDate});
+       inputElement.value = '';
+       inputdueDate.value = '';
+       rendertodoList();
+    }
+   
+</script>
+</html>
